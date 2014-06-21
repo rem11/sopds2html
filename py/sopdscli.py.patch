@@ -1,0 +1,2 @@
+171a172
+>         self.add_response_body('<?xml-stylesheet type="text/xsl" href="res/sopds2html.xsl"?>')

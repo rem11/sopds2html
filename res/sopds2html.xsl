@@ -42,11 +42,62 @@
                     </xsl:if>
                     <div class="list-group">                
                         <xsl:for-each select="opds:entry">
-                            <a href="{opds:link/@href}" class="list-group-item">
-                                <h4 class="list-group-item-heading"><xsl:value-of select="opds:title"/></h4>
-                                <p class="list-group-item-text"><xsl:value-of select="opds:content[@type='text']"/></p>
-                                <p class="list-group-item-text"><xsl:value-of select="opds:content[@type='text/html']" disable-output-escaping="yes" /></p>
-                            </a>
+                            <xsl:choose>
+                                <xsl:when test="
+                                opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/fb2'] or
+                                opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/epub'] or
+                                opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/mobi']">
+                                    <span class="list-group-item">
+                                        <h4 class="list-group-item-heading">
+                                            <xsl:value-of select="opds:title"/>
+                                        </h4>
+                                        <div class="btn-group">
+                                            <xsl:if test="opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/fb2']">
+                                                <a class="btn btn-default"
+                                                   href="{opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/fb2']/@href}">
+                                                    <span class="glyphicon glyphicon-download"></span>
+                                                    FB2
+                                                </a>
+                                            </xsl:if>
+                                            <xsl:if test="opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/epub']">
+                                                <a class="btn btn-default"
+                                                   href="{opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/epub']/@href}">
+                                                    <span class="glyphicon glyphicon-download"></span>
+                                                    EPUB
+                                                </a>
+                                            </xsl:if>
+                                            <xsl:if test="opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/mobi']">
+                                                <a class="btn btn-default"
+                                                   href="{opds:link[@rel='http://opds-spec.org/acquisition' and @type='application/mobi']/@href}">
+                                                    <span class="glyphicon glyphicon-download"></span>
+                                                    MOBI
+                                                </a>
+                                            </xsl:if>
+                                        </div>
+                                        <p class="list-group-item-text">
+                                            <xsl:value-of select="opds:content[@type='text']"/>
+                                        </p>
+                                        <p class="list-group-item-text">
+                                            <xsl:value-of select="opds:content[@type='text/html']"
+                                                          disable-output-escaping="yes"/>
+                                        </p>
+                                    </span>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <a href="{opds:link/@href}" class="list-group-item">
+                                        <h4 class="list-group-item-heading">
+                                            <xsl:value-of select="opds:title"/>
+                                        </h4>
+                                        <p class="list-group-item-text">
+                                            <xsl:value-of select="opds:content[@type='text']"/>
+                                        </p>
+                                        <p class="list-group-item-text">
+                                            <xsl:value-of select="opds:content[@type='text/html']"
+                                                          disable-output-escaping="yes"/>
+                                        </p>
+                                    </a>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:for-each>
                     </div>
                     <!-- TODO: Remove copy-paste -->
